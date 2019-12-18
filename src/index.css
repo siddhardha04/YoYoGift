@@ -1,13 +1,131 @@
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+/*global styles */
+.footer-wrapper {
+  color: white;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #3f51b5;
+}
+
+.flex-2 {
+  flex: 1 1 100%;
+}
+
+.copyright {
+  font-size: 25px;
+}
+
+a.social-share-link {
+  margin: 0px 15px;
+  color: unset;
+}
+.social-icon-size {
+  font-size: 35px !important;
+}
+
+.header-container {
+  width: 100%;
+  height: 60px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  background-color: #3f51b5;
+  color: white;
+}
+
+.header-container > .MuiSvgIcon-root {
+  font-size: 2.5rem;
+}
+
+.app-logo {
+  width: 48px;
+  height: 48px;
+}
+
+img {
+  width: 100%;
+  height: 100%;
+}
+
+.app-title {
+  padding-top: 17px;
+}
+
+.google-login {
+  margin-right: 10px;
+}
+/*media queries */
+
+/* ipad */
+@media only screen and (min-width: 480px) and (max-width: 768px) {
+  .copyright {
+    font-size: 22px;
+    text-align: center;
+  }
+
+  .social-icon-size {
+    font-size: 32px !important;
+  }
+
+  .footer-wrapper {
+    flex-direction: row;
+  }
+
+  .social-share {
+    text-align: center;
+  }
+
+  .app-logo {
+    width: 90px;
+    height: 90px;
+  }
+
+  .header-container {
+    height: 120px;
+  }
+
+  .app-title {
+    padding-top: 33px;
+  }
+  .MuiTypography-h6 {
+    font-size: 2.5rem !important;
+  }
+
+  .google-login > button > .MuiButton-label {
+    font-size: 35px;
+    font-weight: 200;
+  }
+
+  #google-icon {
+    width: 48px;
+    height: 48px;
+  }
+}
+
+/*desktop*/
+@media only screen and (min-width: 1024px) {
+  .copyright {
+    font-size: 25px;
+  }
+  .social-icon-size {
+    font-size: 30px !important;
+  }
+  .footer-wrapper {
+    flex-direction: row;
+  }
 }
