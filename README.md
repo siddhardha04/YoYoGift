@@ -1,4 +1,32 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Steps for opening the application:
+1.install the latest version of nodejs. we will get  npm(node package manager) as a part of it.
+2. open the command prompt in root folder.
+3.enter the command npm install -g json-server. this will install the package globally. we use this as our database.
+4. After installing the package, enter the command json-server --watch  db.json --port 3001. this command will start json-server. go to http://localhost:3001 , we can see the json-server up and running.
+5. enter the command npm install. this will create a node modules folder in the root folder, under which we will have all the npm packages we need.
+6. enter the command npm start. this will start our application and open the chrome tab with the url https://localhost:3000. now our application has started.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/ This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
 
@@ -65,4 +93,4 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/de
 
 ### `npm run build` fails to minify
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify */
