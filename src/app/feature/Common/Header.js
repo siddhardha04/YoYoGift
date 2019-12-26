@@ -4,8 +4,7 @@ import { Link } from "react-router-dom";
 import LoginButton from "./LoginButton";
 import LogoutButton from "./LogoutButton";
 import GoogleLogin from "react-google-login";
-import SearchIcon from "@material-ui/icons/Search";
-import { TextField } from "@material-ui/core";
+import SearchBox from "../SearchBox";
 import { userAuthenticationContext } from "../../shared/Contexts";
 import axios from "axios";
 
@@ -84,16 +83,17 @@ function Header() {
           </Typography>
         </div>
         <span style={{ flex: "1 1 auto" }}></span>
-        <div className="search-container">
+        <SearchBox />
+        {/* <div className="search-container">
           <div className="search-icon">
             <SearchIcon />
           </div>
           <TextField
             id="searchQuery"
-            placeholder="Search for Product"
+            placeholder="Search the Product"
             size="small"
           />
-        </div>
+        </div> */}
         {userContext.userdata.userName === "" ? (
           <GoogleLogin
             clientId="506240403601-qeefsprsusg3ffcogsnk9m7h4o9co23u.apps.googleusercontent.com"
