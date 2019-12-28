@@ -7,7 +7,13 @@ import emailjs from "emailjs-com";
 import { userAuthenticationContext } from "../shared/Contexts";
 
 function SendEmail(props) {
-  const { handleClose, giftId, setsnackbarState } = props;
+  const {
+    handleGiftNowClose,
+    giftId,
+    setSnackbarOpen,
+    setSnackMessage,
+    closeSnackbar
+  } = props;
 
   let userContext = useContext(userAuthenticationContext);
 
@@ -44,19 +50,15 @@ function SendEmail(props) {
             "user_JgOC2O94QDBPEK5j8wMvC"
           );
           if (emaildata.status === 200) {
-            handleClose();
-            setsnackbarState({
-              snackbarOpen: true,
-              vertical: "bottom",
-              horizontal: "center"
-            });
-            setTimeout(() => {
-              setsnackbarState({
-                snackbarOpen: false,
-                vertical: "bottom",
-                horizontal: "center"
-              });
-            }, 2000);
+            handleGiftNowClose();
+            setSnackbarOpen(true);
+            setSnackMessage("Email sent Successfully");
+            closeSnackbar();
+          } else {
+            handleGiftNowClose();
+            setSnackbarOpen(true);
+            setSnackMessage("An error while sending an email");
+            closeSnackbar();
           }
         }}
         onChange={(values, e) => {
@@ -99,7 +101,7 @@ function SendEmail(props) {
               onChange={handleChange}
             />
             <div style={{ color: "red" }}>{errors.message}</div>
-            <Button onClick={handleClose} color="primary">
+            <Button onClick={handleGiftNowClose} color="primary">
               Cancel
             </Button>
             <Button type="submit" color="primary">

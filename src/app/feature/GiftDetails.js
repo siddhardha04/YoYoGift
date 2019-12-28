@@ -2,32 +2,26 @@ import React, { useEffect, useState, useContext, memo } from "react";
 import axios from "axios";
 import Button from "@material-ui/core/Button";
 import CardGiftcardIcon from "@material-ui/icons/CardGiftcard";
-import AccountCircleIcon from "@material-ui/icons/AccountCircle";
+import Reviews from "./Reviews";
 import RateReviewIcon from "@material-ui/icons/RateReview";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import { userAuthenticationContext } from "../shared/Contexts";
 import SendEmail from "./SendEmail";
-import Review from "./Review";
-import Snackbar from "@material-ui/core/Snackbar";
+import GiveReview from "./GiveReview";
+import ActionSnackbar from "../shared/ActionSnackbar";
 import Modal from "../shared/Modal";
 
 function GiftDetails(props) {
   let giftId = props.match.params.id;
   const [giftCardDetails, setGiftCardDetails] = useState({});
   const [userReviews, setUserReviews] = useState([]);
+  const [newReviewAdded, setNewReviewAdded] = useState(0);
   const [openGiftNowModal, setOpenGiftNowModal] = useState(false);
   const [openReviewModal, setOpenReviewModal] = useState(false);
   const [favouriteIds, setFavouriteIds] = useState([]);
 
-  console.log(favouriteIds);
-
-  const [snackbarState, setsnackbarState] = useState({
-    snackbarOpen: false,
-    vertical: "bottom",
-    horizontal: "center"
-  });
-
-  const { vertical, horizontal, snackbarOpen } = snackbarState;
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackMessage, setSnackMessage] = useState("");
 
   let userContext = useContext(userAuthenticationContext);
 
@@ -36,24 +30,33 @@ function GiftDetails(props) {
       .get("http://localhost:3001/gifts/" + giftId)
       .then(resp => setGiftCardDetails(resp.data));
 
-    axios
-      .get("http://localhost:3001/comments-review?giftId=" + giftId)
-      .then(resp => setUserReviews(resp.data));
-
     if (userContext.userdata.userEmail !== "") {
       axios
         .get(
           "http://localhost:3001/users?email=" + userContext.userdata.userEmail
         )
         .then(resp => {
-          console.log(resp);
           setFavouriteIds(resp.data[0].favourites);
         });
     }
   }, [giftId, userContext.userdata.userEmail]);
 
-  const handleClose = () => {
+  useEffect(() => {
+    axios
+      .get("http://localhost:3001/comments-review?giftId=" + giftId)
+      .then(resp => setUserReviews(resp.data));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [newReviewAdded]);
+
+  const addReview = () => {
+    setNewReviewAdded(newReviewAdded + 1);
+  };
+
+  const handleGiftNowClose = () => {
     setOpenGiftNowModal(false);
+  };
+
+  const handleReviewClose = () => {
     setOpenReviewModal(false);
   };
 
@@ -63,6 +66,12 @@ function GiftDetails(props) {
 
   function handleReview() {
     setOpenReviewModal(true);
+  }
+
+  function closeSnackbar() {
+    setTimeout(() => {
+      setSnackbarOpen(false);
+    }, 2000);
   }
 
   return (
@@ -102,7 +111,7 @@ function GiftDetails(props) {
             }
           >
             <FavoriteIcon />
-            Add to Fav
+            {favouriteIds.indexOf(giftId) === -1 ? "Add to Fav" : "Added"}
           </Button>
         </div>
         <div className="review">
@@ -132,28 +141,19 @@ function GiftDetails(props) {
       <div className="rating">
         <p>Rating: {giftCardDetails.rating}</p>
       </div>
-      {userReviews.map(review => (
-        <div className="user-reviews" key={review.userId}>
-          <div className="user-image">
-            <AccountCircleIcon />
-          </div>
-          <div className="review-content">
-            <div>{review.userName}</div>
-            <div>{review.review}</div>
-          </div>
-        </div>
-      ))}
+      <Reviews giftId={giftId} userReviews={userReviews} />
       {openGiftNowModal ? (
         <Modal
           openModal={openGiftNowModal}
-          handleClose={handleClose}
           dialogTitle={"Send The Gift"}
           dialogText={"Please fill out the form to send the gift card"}
           component={
             <SendEmail
-              handleClose={handleClose}
+              handleGiftNowClose={handleGiftNowClose}
               giftId={giftId}
-              setsnackbarState={setsnackbarState}
+              setSnackbarOpen={setSnackbarOpen}
+              setSnackMessage={setSnackMessage}
+              closeSnackbar={closeSnackbar}
             ></SendEmail>
           }
         ></Modal>
@@ -161,47 +161,21 @@ function GiftDetails(props) {
       {openReviewModal ? (
         <Modal
           openModal={openReviewModal}
-          handleClose={handleClose}
           dialogTitle={"Write a Review"}
           dialogText={"Please fill out the form to a write a review"}
           component={
-            <Review
+            <GiveReview
               giftId={giftId}
-              setsnackbarState={setsnackbarState}
-              handleClose={handleClose}
-            ></Review>
+              handleReviewClose={handleReviewClose}
+              setNewReviewAdded={addReview}
+              setSnackbarOpen={setSnackbarOpen}
+              setSnackMessage={setSnackMessage}
+              closeSnackbar={closeSnackbar}
+            ></GiveReview>
           }
         ></Modal>
       ) : null}
-      {/* <Dialog
-        open={openModal}
-        onClose={handleClose}
-        aria-labelledby="form-dialog-title"
-      >
-        <DialogTitle id="form-dialog-title">Send The Gift</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            Please fill out the form to send the gift card
-          </DialogContentText>
-          <SendEmail
-            handleClose={handleClose}
-            giftId={giftId}
-            setsnackbarState={setsnackbarState}
-          />
-        </DialogContent>
-      </Dialog> */}
-      <Snackbar
-        anchorOrigin={{ vertical, horizontal }}
-        key={`${vertical},${horizontal}`}
-        open={snackbarOpen}
-        ContentProps={{
-          "aria-describedby": "message-id"
-        }}
-        message={
-          <span id="message-id">Email has been sent successfully!!</span>
-        }
-        role="alert"
-      />
+      <ActionSnackbar openSnackbar={snackbarOpen} message={snackMessage} />
     </div>
   );
 }
