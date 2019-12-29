@@ -29,7 +29,9 @@ function GiftDetails(props) {
     axios
       .get("http://localhost:3001/gifts/" + giftId)
       .then(resp => setGiftCardDetails(resp.data));
+  }, [giftId]);
 
+  useEffect(() => {
     if (userContext.userdata.userEmail !== "") {
       axios
         .get(
@@ -39,7 +41,7 @@ function GiftDetails(props) {
           setFavouriteIds(resp.data[0].favourites);
         });
     }
-  }, [giftId, userContext.userdata.userEmail]);
+  }, [userContext.userdata.userEmail]);
 
   useEffect(() => {
     axios
@@ -111,7 +113,11 @@ function GiftDetails(props) {
             }
           >
             <FavoriteIcon />
-            {favouriteIds.indexOf(giftId) === -1 ? "Add to Fav" : "Added"}
+            {userContext.userdata.userEmail !== ""
+              ? favouriteIds.indexOf(giftId) === -1
+                ? "Add to Fav"
+                : "Added"
+              : "Add to Fav"}
           </Button>
         </div>
         <div className="review">

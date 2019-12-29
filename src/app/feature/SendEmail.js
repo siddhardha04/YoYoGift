@@ -39,9 +39,10 @@ function SendEmail(props) {
                 ? "Reedem the gift card."
                 : values.message,
             to_email: values.receiverEmail,
-            from_email: values.receiverEmail,
+            from_email: userContext.userdata.userEmail,
             gift_link: "https://localhost:3000/gift/details/" + giftId
           };
+          console.log(templateParams);
 
           let emaildata = await emailjs.send(
             "gmail",
@@ -69,16 +70,8 @@ function SendEmail(props) {
           else if (e.target.name === "message") values.message = e.target.value;
         }}
       >
-        {({
-          values,
-          errors,
-          touched,
-          handleChange,
-          handleSubmit,
-          isSubmitting
-        }) => (
+        {({ values, errors, handleChange }) => (
           <Form>
-            {/* {console.log(errors)} */}
             <TextField
               autoFocus
               margin="dense"

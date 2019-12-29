@@ -44,7 +44,7 @@ function Header() {
       axios.post("http://localhost:3001/users", user);
     } else {
       userContext.setUserData({
-        userName: response.data.name,
+        userName: response.data[0].name,
         userEmail: response.data[0].email,
         userImage: response.data[0].image,
         isAdmin: response.data[0].isAdmin
@@ -63,6 +63,7 @@ function Header() {
 
   function handleLogout() {
     userContext.setUserData({
+      userEmail: "",
       userName: "",
       userImage: "",
       isAdmin: false

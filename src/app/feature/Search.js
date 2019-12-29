@@ -21,7 +21,7 @@ function Search(props) {
 
   return (
     <>
-      <h3>search results</h3>
+      <h3>search results for {searchValue}</h3>
       {filteredCards.length !== 0 ? (
         <GiftCardList gifts={filteredCards} />
       ) : (
